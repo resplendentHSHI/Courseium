@@ -1,0 +1,26 @@
+# Sutra - Environment Variables Template
+# Copy this file to .env and fill in your actual API keys
+
+# OpenAI API Key (for Whisper transcription and GPT-4)
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Friendli.ai API Token (for chat completions)
+FRIENDLI_TOKEN=your_friendli_token_here
+
+# Rime API Key (for text-to-speech)
+RIME_API_KEY=your_rime_api_key_here
+
+# Cohere API Key (for embeddings)
+COHERE_API_KEY=your_cohere_api_key_here
+
+# Tavily API Key (for hybrid search)
+TAVILY_API_KEY=your_tavily_api_key_here
+
+# Google API Key (for ADK and Gemini)
+GOOGLE_API_KEY=your_google_api_key_here
+
+# MongoDB Atlas Connection String
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority
+
+# Optional: Rime TTS Endpoint (defaults to production)
+RIME_TTS_ENDPOINT=https://api.rime.ai/v1/tts 

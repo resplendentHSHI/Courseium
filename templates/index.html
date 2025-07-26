@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sutra - Smart Class Finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Sutra</h1>
+            </div>
+            <ul>
+                <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('cases') }}">Find Classes</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Find Your Perfect Classes with AI</h1>
+                <p>Get personalized course recommendations through voice or text. Discover classes that match your interests, schedule, and academic goals.</p>
+                <a href="{{ url_for('cases') }}" class="btn-primary">Find Classes</a>
+            </div>
+            <div class="hero-image">
+                <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Sutra Class Finder Logo">
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>How It Works</h2>
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <div class="feature-icon">1</div>
+                    <h3>Voice Search</h3>
+                    <p>Ask about classes using natural language. Use voice or text to describe what courses you're looking for.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">2</div>
+                    <h3>Smart Matching</h3>
+                    <p>Get personalized course recommendations based on your interests, schedule preferences, and academic goals.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">3</div>
+                    <h3>Schedule Planning</h3>
+                    <p>Find classes that fit your timetable and build your perfect semester schedule with AI assistance.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <h2>What Students Say</h2>
+            <div class="testimonial-cards">
+                <div class="testimonial-card">
+                    <p>"Sutra helped me find the perfect classes for my major and schedule. The voice search is incredibly convenient!"</p>
+                    <div class="testimonial-author">- College Student, Sophomore</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"I discovered courses I never knew existed. The AI recommendations perfectly matched my interests and availability."</p>
+                    <div class="testimonial-author">- College Student, Junior</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Sutra Learning System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 

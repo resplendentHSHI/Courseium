@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Classes - Sutra</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Sutra</h1>
+            </div>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('cases') }}" class="active">Find Classes</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="page-header">
+            <h1>Class Finder Assistant</h1>
+            <p>Ask me about courses and I'll help you find the perfect classes for your schedule and interests.</p>
+        </section>
+
+        <section class="chat-interface">
+            <div class="chat-container">
+                <div id="chat-messages" class="chat-messages">
+                    <!-- Initial welcome message -->
+                    <div class="message assistant">
+                        <p>Hi! I'm your class finding assistant. What courses are you looking for this semester?</p>
+                    </div>
+                </div>
+                
+                <!-- Starter prompts for users who need guidance -->
+                <div class="starter-prompts">
+                    <p class="starter-prompts-heading">Try asking:</p>
+                    <div class="prompt-buttons">
+                        <button class="prompt-btn" data-prompt="I need computer science classes for beginners">Computer Science classes</button>
+                        <button class="prompt-btn" data-prompt="Show me math courses available on Tuesdays and Thursdays">Math courses on Tue/Thu</button>
+                        <button class="prompt-btn" data-prompt="I'm looking for 3-credit English courses">English courses (3 credits)</button>
+                        <button class="prompt-btn" data-prompt="What classes are available in the evening?">Evening classes</button>
+                        <button class="prompt-btn" data-prompt="I need courses for my psychology major">Psychology major courses</button>
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <textarea id="user-message" placeholder="Ask about classes... (or use voice input)"></textarea>
+                    <button id="send-message">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 12L20 4L12 22L10 14L2 12Z" fill="currentColor"/>
+                        </svg>
+                    </button>
+                    <button id="voice-input">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 14C13.66 14 15 12.66 15 11V5C15 3.34 13.66 2 12 2C10.34 2 9 3.34 9 5V11C9 12.66 10.34 14 12 14ZM18 11C18 14.53 15.39 17.44 12 17.93V21H10V17.93C6.61 17.44 4 14.53 4 11H6C6 13.76 8.24 16 11 16C13.76 16 16 13.76 16 11H18Z" fill="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Sutra Learning System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Simple chat functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sendButton = document.getElementById('send-message');
+            const messageInput = document.getElementById('user-message');
+            const chatMessages = document.getElementById('chat-messages');
+            const voiceButton = document.getElementById('voice-input');
+            const promptButtons = document.querySelectorAll('.prompt-btn');
+
+            // Handle prompt button clicks
+            promptButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const prompt = this.getAttribute('data-prompt');
+                    messageInput.value = prompt;
+                    sendMessage();
+                });
+            });
+
+            // Handle send button click
+            sendButton.addEventListener('click', sendMessage);
+
+            // Handle Enter key in textarea
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Voice input functionality with real recording
+            let mediaRecorder;
+            let audioChunks = [];
+            
+            voiceButton.addEventListener('click', async function() {
+                if (this.classList.contains('recording')) {
+                    // Stop recording
+                    stopRecording();
+                } else {
+                    // Start recording
+                    startRecording();
+                }
+            });
+
+            async function startRecording() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = function(event) {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = function() {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        sendAudioToServer(audioBlob);
+                        
+                        // Stop all tracks to release microphone
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+
+                    mediaRecorder.start();
+                    voiceButton.classList.add('recording');
+                    messageInput.placeholder = 'Listening... Click voice button again to stop';
+                    
+                } catch (error) {
+                    console.error('Error accessing microphone:', error);
+                    alert('Could not access microphone. Please check permissions.');
+                }
+            }
+
+            function stopRecording() {
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                    voiceButton.classList.remove('recording');
+                    messageInput.placeholder = 'Ask about classes... (or use voice input)';
+                }
+            }
+
+            function sendAudioToServer(audioBlob) {
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'recording.wav');
+
+                fetch('/api/transcribe', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.text) {
+                        messageInput.value = data.text;
+                        // Optionally auto-send the message
+                        // sendMessage();
+                    } else if (data.error) {
+                        console.error('Transcription error:', data.error);
+                        alert('Voice transcription failed. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending audio:', error);
+                    alert('Failed to process voice input. Please try again.');
+                });
+            }
+
+            function sendMessage() {
+                const message = messageInput.value.trim();
+                if (!message) return;
+
+                // Add user message
+                addMessage(message, 'user');
+                messageInput.value = '';
+
+                // Send message to backend
+                fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.response) {
+                        addMessage(data.response, 'assistant');
+                        // Play the response as audio using Rime TTS
+                        playResponseAudio(data.response);
+                    } else if (data.error) {
+                        addMessage('Sorry, I encountered an error. Please try again.', 'assistant');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    addMessage('Sorry, I\'m having trouble connecting. Please try again.', 'assistant');
+                });
+            }
+
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                messageDiv.innerHTML = `<p>${text}</p>`;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Play AI response as audio using Rime TTS
+            async function playResponseAudio(text) {
+                try {
+                    const response = await fetch('/api/text-to-speech', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            text: text,
+                            voice: 'default'
+                        })
+                    });
+
+                    if (response.ok) {
+                        // Check if response is audio or JSON
+                        const contentType = response.headers.get('content-type');
+                        
+                        if (contentType && contentType.includes('audio')) {
+                            // Play the audio
+                            const audioBlob = await response.blob();
+                            const audioUrl = URL.createObjectURL(audioBlob);
+                            
+                            const audio = new Audio(audioUrl);
+                            audio.play();
+                            
+                            // Clean up URL after playing
+                            audio.onended = () => {
+                                URL.revokeObjectURL(audioUrl);
+                            };
+                        } else {
+                            // Handle JSON response (fallback message)
+                            const data = await response.json();
+                            console.log('TTS fallback:', data.message);
+                        }
+                    } else {
+                        console.error('TTS API error:', response.status);
+                    }
+                } catch (error) {
+                    console.error('Error playing TTS audio:', error);
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

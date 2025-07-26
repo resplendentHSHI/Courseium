@@ -1,0 +1,7 @@
+# This file is just to ensure the directory is created in git
+# Place the following files in this directory:
+# - x-ray1-pa.jpg (initial PA chest X-ray)
+# - x-ray1-lateral.jpg (initial lateral chest X-ray)
+# - x-ray2-pa.jpg (follow-up PA chest X-ray)
+# - x-ray2-lateral.jpg (follow-up lateral chest X-ray)
+# - patient_intro.mp3 (patient audio introduction) 

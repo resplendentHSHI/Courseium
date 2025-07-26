@@ -1,0 +1,74 @@
+{
+  "id": "case-001",
+  "name": "Mr. Alcot",
+  "age": 67,
+  "gender": "Male",
+  "chief_complaint": "Shortness of breath",
+  "symptoms": [
+    "Progressive shortness of breath over 6 months",
+    "Dry cough",
+    "Fatigue",
+    "Weight loss"
+  ],
+  "history": "Former smoker (40 pack-years), worked in construction for 35 years. History of hypertension controlled with medication. Father died of lung cancer.",
+  "vitals": {
+    "bp": "135/85",
+    "hr": "88",
+    "rr": "24",
+    "temp": "98.2",
+    "o2sat": "92% on room air"
+  },
+  "physical_exam": "Appears older than stated age, mild respiratory distress. Decreased breath sounds bilaterally with fine crackles at bases. Finger clubbing noted. No cyanosis, no peripheral edema.",
+  "labs": "CBC: mild anemia. Basic metabolic panel within normal limits. Elevated inflammatory markers.",
+  "imaging_needed": "Chest X-ray",
+  "physical_examination_media": {
+    "visualFindings": [
+      {
+        "imageUrl": "data/case1/image61.jpg",
+        "caption": "Finger clubbing - indicative of chronic hypoxemia, commonly seen in certain pulmonary conditions"
+      }
+    ],
+    "auscultation": [
+      {
+        "title": "Lung Sounds - Bilateral Rales",
+        "audioUrl": "data/case1/ralesbro.mp3",
+        "description": "Auscultation reveals bilateral rales (crackles), suggestive of interstitial fluid accumulation"
+      }
+    ],
+    "models3D": [
+      {
+        "title": "Lung Pathology Model",
+        "embedCode": "<iframe title=\"Lung Pathology\" frameborder=\"0\" allowfullscreen mozallowfullscreen=\"true\" webkitallowfullscreen=\"true\" allow=\"autoplay; fullscreen; xr-spatial-tracking\" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src=\"https://sketchfab.com/models/6eb72c6a02514f438acb0bc6e3f5fba8/embed\"> </iframe>",
+        "description": "3D model showing lung pathology"
+      }
+    ]
+  },
+  "imaging_files": {
+    "initial_chest_xray_pa": "images/chest-xray-pa.jpg",
+    "initial_chest_xray_lateral": "images/chest-xray-lateral.jpg",
+    "finger_clubbing": "data/case1/image61.jpg"
+  },
+  "differential_diagnoses": [
+    {
+      "diagnosis": "Idiopathic Pulmonary Fibrosis",
+      "likelihood": "High",
+      "supporting_evidence": "Progressive dyspnea, dry cough, bibasilar crackles, finger clubbing, history of construction work",
+      "recommended_tests": "High-resolution CT, pulmonary function tests, possibly lung biopsy"
+    },
+    {
+      "diagnosis": "Chronic Obstructive Pulmonary Disease",
+      "likelihood": "Medium",
+      "supporting_evidence": "Smoking history, progressive dyspnea, dry cough",
+      "recommended_tests": "Pulmonary function tests, CT scan"
+    },
+    {
+      "diagnosis": "Interstitial Lung Disease",
+      "likelihood": "High",
+      "supporting_evidence": "Progressive dyspnea, dry cough, bibasilar crackles, occupational exposure",
+      "recommended_tests": "High-resolution CT, pulmonary function tests, bronchoscopy"
+    }
+  ],
+  "final_diagnosis": "Idiopathic Pulmonary Fibrosis",
+  "treatment_plan": "Referral to pulmonologist, antifibrotic therapy (pirfenidone or nintedanib), supplemental oxygen as needed, pulmonary rehabilitation.",
+  "follow_up": "Regular monitoring of lung function, oxygen levels, and disease progression. Consideration for lung transplant evaluation if rapid progression."
+} 
