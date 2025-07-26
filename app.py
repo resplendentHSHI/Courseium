@@ -7,6 +7,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import tempfile
 from llama_index.llms.openai import OpenAI as LlamaOpenAI
+import markdown
 # We avoid a direct LlamaIndex Evaluator base to eliminate import issues on some versions.
 
 import os
@@ -64,18 +65,6 @@ index_definition = {
 new_vector_search_index_model = SearchIndexModel(
     definition=index_definition, name=index_name, type="vectorSearch"
 )
-
-# Create the new index
-try:
-    result = collection.create_search_index(model=new_vector_search_index_model)
-    print(f"Creating index '{index_name}'...")
-
-    time.sleep(20)
-
-    print(f"Index '{index_name}' created successfully")
-
-except Exception as e:
-    print(f"Error creating new vector search index '{index_name}': {e!s}")
 
 
 from tavily import TavilyHybridClient

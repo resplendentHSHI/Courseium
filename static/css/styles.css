@@ -1,5 +1,5 @@
 /* 
- * Sutra Medical Case Simulation
+ * Courseium Medical Case Simulation
  * Main Stylesheet
  */
 
@@ -725,6 +725,126 @@ select, input[type="text"] {
   background-color: #f3f4f6;
   color: var(--text-dark);
   border-top-left-radius: 0;
+}
+
+/* Markdown content styling for chat messages */
+.message-content {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-lg);
+  line-height: 1.4;
+  background-color: #f3f4f6;
+  color: var(--text-dark);
+  border-top-left-radius: 0;
+}
+
+.message.user .message-content {
+  background-color: var(--primary-color);
+  color: white;
+  border-top-right-radius: 0;
+  border-top-left-radius: var(--radius-lg);
+}
+
+/* Markdown elements styling */
+.message-content h1,
+.message-content h2,
+.message-content h3,
+.message-content h4,
+.message-content h5,
+.message-content h6 {
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.message-content h1 { font-size: 1.5rem; }
+.message-content h2 { font-size: 1.25rem; }
+.message-content h3 { font-size: 1.125rem; }
+.message-content h4 { font-size: 1rem; }
+.message-content h5 { font-size: 0.875rem; }
+.message-content h6 { font-size: 0.75rem; }
+
+.message-content p {
+  margin: 0.5rem 0;
+}
+
+.message-content ul,
+.message-content ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.message-content li {
+  margin: 0.25rem 0;
+}
+
+.message-content code {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875em;
+}
+
+.message-content pre {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+}
+
+.message-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.message-content blockquote {
+  border-left: 4px solid var(--primary-color);
+  padding-left: 1rem;
+  margin: 0.5rem 0;
+  font-style: italic;
+  color: var(--text-light);
+}
+
+.message-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.message-content th,
+.message-content td {
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.message-content th {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+}
+
+.message-content a {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+.message-content a:hover {
+  color: var(--primary-dark);
+}
+
+.message-content strong {
+  font-weight: 600;
+}
+
+.message-content em {
+  font-style: italic;
+}
+
+.message-content hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 1rem 0;
 }
 
 .chat-input {
@@ -1997,7 +2117,7 @@ footer {
     margin: 10px 0;
 }
 
-.message.system p {
+.message.system .message-content {
     color: #0369a1;
     font-style: italic;
     font-size: 14px;

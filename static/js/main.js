@@ -1,5 +1,5 @@
 /**
- * Sutra Medical Case Simulation
+ * Courseium Medical Case Simulation
  * Main JavaScript
  */
 

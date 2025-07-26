@@ -1,4 +1,4 @@
-# Sutra - Smart Class Finder
+# Courseium - Smart Class Finder
 
 A web application that helps students find the perfect college courses through AI-powered chat interactions. This system combines course search, voice interaction, and intelligent recommendations to make course discovery intuitive and personalized.
 
@@ -38,13 +38,13 @@ A web application that helps students find the perfect college courses through A
 1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd Sutra
+   cd Courseium
    ```
 
 2. Create a virtual environment:
    ```bash
-   conda create --name sutra python=3.12
-   conda activate sutra
+   conda create --name courseium python=3.12
+conda activate courseium
    ```
 
 3. Install dependencies:

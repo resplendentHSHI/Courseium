@@ -20,9 +20,9 @@ Transform the existing medical case simulation website into a college class-find
 ## 📋 **PHASE 1: CONTENT & BRANDING TRANSFORMATION**
 
 ### 1.1 Website Identity & Branding
-- **Current:** "Sutra - Medical Case Simulations"
-- **New:** "Sutra - Smart Class Finder" or "Sutra - Course Discovery"
-- **Logo/Branding:** Keep "Sutra" name, update tagline
+- **Current:** "Courseium - Medical Case Simulations"
+- **New:** "Courseium - Smart Class Finder" or "Courseium - Course Discovery"
+- **Logo/Branding:** Keep "Courseium" name, update tagline
 - **Color Scheme:** Consider academic blues/greens vs medical whites
 
 ### 1.2 Homepage Content (`templates/index.html`)
@@ -102,7 +102,7 @@ CTA: "Start Finding Classes"
 **New Interface Layout:**
 ```
 ┌─────────────────────────────────────────────┐
-│ 🎓 Sutra Class Finder                      │
+│ 🎓 Courseium Class Finder                      │
 ├─────────────────────────────────────────────┤
 │ Search Filters:                             │
 │ [Department ▼] [Credits ▼] [Time ▼]         │

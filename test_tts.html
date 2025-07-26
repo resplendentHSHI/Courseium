@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS Test</title>
+</head>
+<body>
+    <h1>Text-to-Speech Test</h1>
+    <button onclick="testTTS()">Test TTS</button>
+    <button onclick="testFallback()">Test Fallback</button>
+    
+    <script>
+        async function testTTS() {
+            try {
+                const response = await fetch('/api/text-to-speech', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        text: "Hello, this is a test of the text to speech functionality.",
+                        voice: 'onyx'
+                    })
+                });
+                
+                if (response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    
+                    if (contentType && contentType.includes('audio')) {
+                        console.log('Audio response received');
+                        const audioBlob = await response.blob();
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        
+                        const audio = new Audio(audioUrl);
+                        audio.play();
+                        
+                        audio.onended = () => {
+                            URL.revokeObjectURL(audioUrl);
+                        };
+                    } else {
+                        const data = await response.json();
+                        console.log('JSON response:', data);
+                        
+                        if (data.fallback && 'speechSynthesis' in window) {
+                            const utterance = new SpeechSynthesisUtterance("Hello, this is a test of the text to speech functionality.");
+                            utterance.rate = 0.9;
+                            utterance.pitch = 1.0;
+                            utterance.volume = 1.0;
+                            speechSynthesis.speak(utterance);
+                        }
+                    }
+                } else {
+                    console.error('TTS API error:', response.status);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        function testFallback() {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance("This is a direct test of browser speech synthesis.");
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                speechSynthesis.speak(utterance);
+                console.log('Fallback TTS activated');
+            } else {
+                console.error('Speech synthesis not supported');
+            }
+        }
+    </script>
+</body>
+</html> 

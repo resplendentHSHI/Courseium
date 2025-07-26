@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Classes - Sutra</title>
+    <title>Find Classes - Courseium</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -11,7 +11,7 @@
     <header>
         <nav>
             <div class="logo">
-                <h1>Sutra</h1>
+                <h1>Courseium</h1>
             </div>
             <ul>
                 <li><a href="{{ url_for('index') }}">Home</a></li>
@@ -67,7 +67,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 Sutra Learning System. All rights reserved.</p>
+            <p>&copy; 2025 Courseium Learning System. All rights reserved.</p>
         </div>
     </footer>
 
@@ -226,7 +226,7 @@
                         },
                         body: JSON.stringify({ 
                             text: text,
-                            voice: 'default'
+                            voice: 'onyx'
                         })
                     });
 
@@ -249,7 +249,16 @@
                         } else {
                             // Handle JSON response (fallback message)
                             const data = await response.json();
-                            console.log('TTS fallback:', data.message);
+                            console.log('TTS fallback:', data.error);
+                            
+                            // Use browser's built-in speech synthesis as fallback
+                            if (data.fallback && 'speechSynthesis' in window) {
+                                const utterance = new SpeechSynthesisUtterance(text);
+                                utterance.rate = 0.9;
+                                utterance.pitch = 1.0;
+                                utterance.volume = 1.0;
+                                speechSynthesis.speak(utterance);
+                            }
                         }
                     } else {
                         console.error('TTS API error:', response.status);

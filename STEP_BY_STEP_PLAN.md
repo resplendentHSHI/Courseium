@@ -9,7 +9,7 @@
 **File:** `templates/index.html`
 
 ### What to Change:
-1. **Page Title:** "Sutra - Medical Case Simulations" → "Sutra - Smart Class Finder"
+1. **Page Title:** "Courseium - Medical Case Simulations" → "Courseium - Smart Class Finder"
 2. **Hero Headline:** "Learn to Think Like a Doctor" → "Find Your Perfect Classes with AI"
 3. **Hero Subtext:** Replace medical description with class-finding description
 4. **Call-to-Action Button:** "Start Simulation" → "Find Classes"
@@ -59,11 +59,11 @@ Replace the 3 "How It Works" cards:
 ### Replace Medical Student Testimonials:
 ```html
 <!-- OLD -->
-<p>"Sutra helped me develop my clinical reasoning skills..."</p>
+<p>"Courseium helped me develop my clinical reasoning skills..."</p>
 <div class="testimonial-author">- Medical Student, Year 2</div>
 
 <!-- NEW -->
-<p>"Sutra helped me find the perfect classes for my major and schedule!"</p>
+<p>"Courseium helped me find the perfect classes for my major and schedule!"</p>
 <div class="testimonial-author">- College Student, Sophomore</div>
 ```
 

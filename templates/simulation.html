@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Simulation - Sutra</title>
+    <title>Case Simulation - Courseium</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -11,7 +11,7 @@
     <header>
         <nav>
             <div class="logo">
-                <h1>Sutra</h1>
+                <h1>Courseium</h1>
             </div>
             <ul>
                 <li><a href="{{ url_for('index') }}">Home</a></li>
@@ -211,7 +211,7 @@
                 <div id="chat-messages" class="chat-messages">
                     <!-- Messages will be added here -->
                     <div class="message patient">
-                        <p>Hello, I'm {{ case.name }}. I've been experiencing {{ case.chief_complaint.lower() }}.</p>
+                        <div class="message-content">Hello, I'm {{ case.name }}. I've been experiencing {{ case.chief_complaint.lower() }}.</div>
                     </div>
                 </div>
                 
@@ -334,7 +334,7 @@
                 <div id="diagnosis-messages" class="chat-messages">
                     <!-- Messages will be added here -->
                     <div class="message doctor">
-                        <p>Let's work through the differential diagnosis. What are your initial thoughts based on the patient's presentation?</p>
+                        <div class="message-content">Let's work through the differential diagnosis. What are your initial thoughts based on the patient's presentation?</div>
                     </div>
                 </div>
                 
@@ -691,21 +691,39 @@
                     })
                 });
                 
-                if (!response.ok) {
-                    throw new Error('Failed to generate speech');
+                if (response.ok) {
+                    // Check if response is audio or JSON
+                    const contentType = response.headers.get('content-type');
+                    
+                    if (contentType && contentType.includes('audio')) {
+                        // Play the audio
+                        const audioBlob = await response.blob();
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        
+                        const audio = new Audio(audioUrl);
+                        audio.play();
+                        
+                        // Clean up URL after playing
+                        audio.onended = () => {
+                            URL.revokeObjectURL(audioUrl);
+                        };
+                    } else {
+                        // Handle JSON response (error message)
+                        const data = await response.json();
+                        console.log('TTS error:', data.error);
+                        
+                        // Use browser's built-in speech synthesis as fallback
+                        if (data.fallback && 'speechSynthesis' in window) {
+                            const utterance = new SpeechSynthesisUtterance(text);
+                            utterance.rate = 0.9;
+                            utterance.pitch = 1.0;
+                            utterance.volume = 1.0;
+                            speechSynthesis.speak(utterance);
+                        }
+                    }
+                } else {
+                    console.error('TTS API error:', response.status);
                 }
-                
-                const audioBlob = await response.blob();
-                const audioUrl = URL.createObjectURL(audioBlob);
-                
-                // Create and play audio element
-                const audio = new Audio(audioUrl);
-                audio.play();
-                
-                // Clean up URL object after playing
-                audio.onended = () => {
-                    URL.revokeObjectURL(audioUrl);
-                };
             } catch (error) {
                 console.error('Error playing TTS audio:', error);
             }
@@ -750,7 +768,7 @@
         // Function to play the initial greeting message when page loads
         function playInitialGreeting() {
             // Get the initial message text from the DOM
-            const initialMessageElement = document.querySelector('.message.patient p');
+            const initialMessageElement = document.querySelector('.message.patient .message-content');
             if (initialMessageElement && voiceModeEnabled) {
                 const initialMessage = initialMessageElement.textContent;
                 playResponseAudio(initialMessage, true);
@@ -783,7 +801,7 @@
                 const chatMessages = document.getElementById('chat-messages');
                 const userMessageDiv = document.createElement('div');
                 userMessageDiv.className = 'message user';
-                userMessageDiv.innerHTML = `<p>${message}</p>`;
+                userMessageDiv.innerHTML = `<div class="message-content">${message}</div>`;
                 chatMessages.appendChild(userMessageDiv);
                 
                 // Clear input
@@ -814,7 +832,7 @@
                     // Add AI response to chat
                     const aiMessageDiv = document.createElement('div');
                     aiMessageDiv.className = 'message patient';
-                    aiMessageDiv.innerHTML = `<p>${data.response}</p>`;
+                    aiMessageDiv.innerHTML = `<div class="message-content">${data.response}</div>`;
                     chatMessages.appendChild(aiMessageDiv);
                     
                     // Scroll to bottom
@@ -873,7 +891,7 @@
             const chatMessages = document.getElementById('chat-messages');
             const systemMessage = document.createElement('div');
             systemMessage.className = 'message system';
-            systemMessage.innerHTML = `<p>Physical examination conducted. You note finger clubbing and auscultate bilateral crackles (rales) at the lung bases. These findings are consistent with chronic respiratory disease, possibly pulmonary fibrosis or another interstitial lung disease.</p>`;
+            systemMessage.innerHTML = `<div class="message-content">Physical examination conducted. You note finger clubbing and auscultate bilateral crackles (rales) at the lung bases. These findings are consistent with chronic respiratory disease, possibly pulmonary fibrosis or another interstitial lung disease.</div>`;
             chatMessages.appendChild(systemMessage);
             
             // Scroll to bottom
@@ -975,7 +993,7 @@
                 const chatMessages = document.getElementById('diagnosis-messages');
                 const userMessageDiv = document.createElement('div');
                 userMessageDiv.className = 'message user';
-                userMessageDiv.innerHTML = `<p>${message}</p>`;
+                userMessageDiv.innerHTML = `<div class="message-content">${message}</div>`;
                 chatMessages.appendChild(userMessageDiv);
                 
                 // Clear input
@@ -997,7 +1015,7 @@
                     // Add AI response to chat
                     const aiMessageDiv = document.createElement('div');
                     aiMessageDiv.className = 'message doctor';
-                    aiMessageDiv.innerHTML = `<p>${data.response}</p>`;
+                    aiMessageDiv.innerHTML = `<div class="message-content">${data.response}</div>`;
                     chatMessages.appendChild(aiMessageDiv);
                     
                     // Scroll to bottom
@@ -1045,13 +1063,13 @@
             if (chatMessages) {
                 const aiMessage = document.createElement('div');
                 aiMessage.className = 'message patient';
-                aiMessage.innerHTML = '<p>The pain has been getting worse over the last 24 hours. It started around my belly button but now it\'s more on the lower right side.</p>';
+                aiMessage.innerHTML = '<div class="message-content">The pain has been getting worse over the last 24 hours. It started around my belly button but now it\'s more on the lower right side.</div>';
                 chatMessages.appendChild(aiMessage);
                 
                 // Simulation doctor's suggestion
                 const doctorMessage = document.createElement('div');
                 doctorMessage.className = 'message system';
-                doctorMessage.innerHTML = '<p>Based on the symptoms, it would be appropriate to order imaging to confirm your suspicion.</p>';
+                doctorMessage.innerHTML = '<div class="message-content">Based on the symptoms, it would be appropriate to order imaging to confirm your suspicion.</div>';
                 chatMessages.appendChild(doctorMessage);
                 
                 // Scroll to bottom
